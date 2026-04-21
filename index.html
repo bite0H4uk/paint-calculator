@@ -3,49 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>Калькулятор покраски стен | Стоимость ремонта</title>
-    <meta name="description" content="Рассчитайте стоимость покраски стен в квартире или комнате: краска, работа маляра, итоговая цена.">
+    <title>Калькуляторы на все случаи | Агрегатор</title>
+    <meta name="description" content="Бесплатные онлайн калькуляторы: кредитный, покраски стен, ИМТ, расхода топлива. Удобно и быстро.">
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
             font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
         }
         body {
-            background: #f1f5f9;
-            margin: 0;
+            background: #f0f4f8;
             padding: 20px;
-            display: flex;
-            justify-content: center;
         }
-        .card {
-            max-width: 600px;
-            width: 100%;
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
-            padding: 24px 20px 32px;
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
         }
         h1 {
-            font-size: 1.8rem;
-            margin: 0 0 8px 0;
+            font-size: 1.9rem;
             color: #0f172a;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-        .sub {
+        .subhead {
             color: #475569;
+            margin-bottom: 24px;
             border-left: 4px solid #3b82f6;
             padding-left: 12px;
-            margin-bottom: 28px;
-            font-size: 0.95rem;
+        }
+        /* Вкладки */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: #e2e8f0;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            background: #3b82f6;
+            color: white;
+            box-shadow: 0 4px 8px rgba(59,130,246,0.3);
+        }
+        .tab-btn:hover:not(.active) {
+            background: #cbd5e1;
+        }
+        /* Карточка калькулятора */
+        .calculator-card {
+            background: white;
+            border-radius: 32px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+            margin-bottom: 24px;
+        }
+        .calculator-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #0f172a;
+            border-left: 4px solid #facc15;
+            padding-left: 12px;
         }
         .param {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
         label {
             display: flex;
             justify-content: space-between;
             font-weight: 600;
-            color: #1e293b;
             margin-bottom: 8px;
+            color: #334155;
         }
         input[type="range"] {
             width: 100%;
@@ -53,26 +93,21 @@
             -webkit-appearance: none;
             background: #e2e8f0;
             border-radius: 10px;
-            outline: none;
-        }
-        input[type="range"]:focus {
-            outline: none;
         }
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background: #3b82f6;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
         .value-input {
-            margin-top: 8px;
             width: 100%;
             padding: 10px;
             border: 1px solid #cbd5e1;
             border-radius: 16px;
+            margin-top: 8px;
             font-size: 1rem;
             background: #f8fafc;
         }
@@ -81,187 +116,363 @@
             color: white;
             border-radius: 24px;
             padding: 20px;
-            margin: 20px 0 20px;
             text-align: center;
+            margin-top: 20px;
         }
         .result span {
             font-size: 2rem;
             font-weight: 800;
             display: block;
-            letter-spacing: 1px;
         }
-        .total {
-            font-size: 2.4rem !important;
-            color: #facc15;
-        }
-        .note {
-            font-size: 0.8rem;
-            color: #64748b;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .ad-place {
-            margin: 30px 0 10px;
-            background: #f1f5f9;
-            border-radius: 20px;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.75rem;
-            color: #334155;
-            border: 1px dashed #94a3b8;
-        }
-        hr {
-            margin: 20px 0;
-            border: none;
-            border-top: 1px solid #e2e8f0;
-        }
-        footer {
-            font-size: 0.7rem;
-            text-align: center;
-            color: #94a3b8;
-            margin-top: 20px;
+        .result .small {
+            font-size: 0.85rem;
+            font-weight: normal;
+            opacity: 0.8;
         }
         button {
             background: #3b82f6;
             color: white;
             border: none;
-            padding: 12px 20px;
+            width: 100%;
+            padding: 12px;
             border-radius: 40px;
             font-weight: 600;
-            width: 100%;
+            margin-top: 12px;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 1rem;
         }
-        button:hover {
-            background: #2563eb;
+        .ad-place {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 16px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #334155;
+            border: 1px dashed #94a3b8;
+            margin-top: 20px;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #94a3b8;
+            margin-top: 20px;
+        }
+        hr {
+            margin: 16px 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        @media (max-width: 500px) {
+            .tabs button { padding: 8px 12px; font-size: 0.8rem; }
+            h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
-<div class="card">
-    <h1>🖌️ Калькулятор покраски стен</h1>
-    <div class="sub">Рассчитайте стоимость материалов + работу маляра за м²</div>
+<div class="container">
+    <h1>📊 Агрегатор калькуляторов</h1>
+    <div class="subhead">Выберите нужный инструмент — результат мгновенно</div>
 
-    <div class="param">
-        <label>📐 Площадь стен (м²) <span id="areaVal">40</span></label>
-        <input type="range" id="area" min="10" max="250" step="1" value="40">
-        <input type="number" id="areaInput" class="value-input" step="1" value="40">
+    <!-- Вкладки -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="credit">💰 Кредитный</button>
+        <button class="tab-btn" data-tab="paint">🖌️ Покраска стен</button>
+        <button class="tab-btn" data-tab="bmi">🧘 ИМТ (вес/рост)</button>
+        <button class="tab-btn" data-tab="fuel">⛽ Расход топлива</button>
     </div>
 
-    <div class="param">
-        <label>💰 Цена краски за 1 литр (₽) <span id="paintPriceVal">500</span></label>
-        <input type="range" id="paintPrice" min="100" max="15000" step="10" value="500">
-        <input type="number" id="paintPriceInput" class="value-input" step="10" value="500">
+    <!-- Кредитный калькулятор -->
+    <div id="credit" class="calculator-card">
+        <h2>💰 Кредитный калькулятор</h2>
+        <div class="param">
+            <label>💰 Сумма кредита (₽) <span id="loanAmountVal">500000</span></label>
+            <input type="range" id="loanAmount" min="10000" max="5000000" step="10000" value="500000">
+            <input type="number" id="loanAmountInput" class="value-input" step="10000" value="500000">
+        </div>
+        <div class="param">
+            <label>📈 Процентная ставка (% годовых) <span id="rateVal">15</span></label>
+            <input type="range" id="rate" min="1" max="35" step="0.5" value="15">
+            <input type="number" id="rateInput" class="value-input" step="0.5" value="15">
+        </div>
+        <div class="param">
+            <label>📅 Срок (месяцев) <span id="monthsVal">24</span></label>
+            <input type="range" id="months" min="3" max="120" step="1" value="24">
+            <input type="number" id="monthsInput" class="value-input" step="1" value="24">
+        </div>
+        <div class="result">
+            Ежемесячный платёж <span id="monthlyPayment">0</span> ₽
+            <div class="small">(аннуитетный)</div>
+        </div>
+        <button class="copy-result" data-source="credit">📋 Скопировать результат</button>
+        <div class="ad-place">⚡ Реклама — вставьте сюда код AdSense или тизерной сети</div>
     </div>
 
-    <div class="param">
-        <label>🎨 Расход краски (литров на м²) <span id="consumptionVal">0.15</span></label>
-        <input type="range" id="consumption" min="0.08" max="2" step="0.01" value="0.15">
-        <input type="number" id="consumptionInput" class="value-input" step="0.01" value="0.15">
+    <!-- Покраска стен (ремонт) -->
+    <div id="paint" class="calculator-card" style="display: none;">
+        <h2>🖌️ Калькулятор покраски стен</h2>
+        <div class="param">
+            <label>📐 Площадь стен (м²) <span id="paintAreaVal">40</span></label>
+            <input type="range" id="paintArea" min="10" max="150" value="40">
+            <input type="number" id="paintAreaInput" class="value-input" value="40">
+        </div>
+        <div class="param">
+            <label>💰 Цена краски (₽/л) <span id="paintPriceVal">500</span></label>
+            <input type="range" id="paintPrice" min="200" max="1500" step="10" value="500">
+            <input type="number" id="paintPriceInput" class="value-input" value="500">
+        </div>
+        <div class="param">
+            <label>🎨 Расход (л/м²) <span id="consumptionVal">0.15</span></label>
+            <input type="range" id="consumption" min="0.08" max="0.3" step="0.01" value="0.15">
+            <input type="number" id="consumptionInput" class="value-input" step="0.01" value="0.15">
+        </div>
+        <div class="param">
+            <label>🧑‍🎨 Работа маляра (₽/м²) <span id="workPriceVal">250</span></label>
+            <input type="range" id="workPrice" min="100" max="600" step="10" value="250">
+            <input type="number" id="workPriceInput" class="value-input" value="250">
+        </div>
+        <div class="result">
+            Итого: <span id="paintTotal">0</span> ₽ <span class="small">(краска + работа)</span>
+        </div>
+        <button class="copy-result" data-source="paint">📋 Скопировать результат</button>
+        <div class="ad-place">⚡ Реклама — вставьте сюда код AdSense или тизерной сети</div>
     </div>
 
-    <div class="param">
-        <label>🧑‍🎨 Стоимость работы маляра (₽ за м²) <span id="workPriceVal">250</span></label>
-        <input type="range" id="workPrice" min="100" max="5000" step="10" value="250">
-        <input type="number" id="workPriceInput" class="value-input" step="10" value="250">
+    <!-- ИМТ -->
+    <div id="bmi" class="calculator-card" style="display: none;">
+        <h2>🧘 Индекс массы тела (ИМТ)</h2>
+        <div class="param">
+            <label>📏 Рост (см) <span id="heightVal">170</span></label>
+            <input type="range" id="height" min="100" max="220" value="170">
+            <input type="number" id="heightInput" class="value-input" value="170">
+        </div>
+        <div class="param">
+            <label>⚖️ Вес (кг) <span id="weightVal">70</span></label>
+            <input type="range" id="weight" min="30" max="180" value="70">
+            <input type="number" id="weightInput" class="value-input" value="70">
+        </div>
+        <div class="result">
+            Ваш ИМТ: <span id="bmiValue">0</span><br>
+            <span id="bmiDesc" class="small">—</span>
+        </div>
+        <button class="copy-result" data-source="bmi">📋 Скопировать результат</button>
+        <div class="ad-place">⚡ Реклама — вставьте сюда код AdSense или тизерной сети</div>
     </div>
 
-    <div class="result">
-        💰 Общая стоимость покраски
-        <span class="total" id="total">0</span> ₽
-        <div style="font-size: 0.85rem; margin-top: 8px;">включая краску + работу</div>
+    <!-- Расход топлива -->
+    <div id="fuel" class="calculator-card" style="display: none;">
+        <h2>⛽ Расход топлива (поездка)</h2>
+        <div class="param">
+            <label>📏 Расстояние (км) <span id="distVal">300</span></label>
+            <input type="range" id="distance" min="10" max="1000" step="5" value="300">
+            <input type="number" id="distanceInput" class="value-input" value="300">
+        </div>
+        <div class="param">
+            <label>⛽ Расход (л/100 км) <span id="fuelConsVal">8.5</span></label>
+            <input type="range" id="fuelCons" min="3" max="25" step="0.5" value="8.5">
+            <input type="number" id="fuelConsInput" class="value-input" step="0.5" value="8.5">
+        </div>
+        <div class="param">
+            <label>💰 Цена топлива (₽/л) <span id="fuelPriceVal">50</span></label>
+            <input type="range" id="fuelPrice" min="30" max="100" step="1" value="50">
+            <input type="number" id="fuelPriceInput" class="value-input" value="50">
+        </div>
+        <div class="result">
+            Стоимость поездки: <span id="tripCost">0</span> ₽<br>
+            <span id="litersNeeded" class="small"></span>
+        </div>
+        <button class="copy-result" data-source="fuel">📋 Скопировать результат</button>
+        <div class="ad-place">⚡ Реклама — вставьте сюда код AdSense или тизерной сети</div>
     </div>
 
-    <button id="copyBtn">📋 Скопировать результат</button>
-
-    <!-- Место для рекламы (тизерная сеть или партнёрка) -->
-    <div class="ad-place">
-        ⚡ Здесь может быть ваша реклама<br>
-        <small>(а может и не быть)</small>
-    </div>
-
-    <footer>
-        ⚡ Калькулятор примерный, на всякий случай добавьте 10% на погрешность. Для точного расчёта рекомендуем обратиться к специалисту.
-    </footer>
+    <footer>⚡ Все расчёты примерные. Для точного расчёта обратитесь к специалистам.</footer>
 </div>
 
 <script>
-    // DOM элементы
-    const areaSlider = document.getElementById('area');
-    const areaInput = document.getElementById('areaInput');
-    const areaVal = document.getElementById('areaVal');
-    
-    const paintPriceSlider = document.getElementById('paintPrice');
-    const paintPriceInput = document.getElementById('paintPriceInput');
-    const paintPriceVal = document.getElementById('paintPriceVal');
-    
-    const consumptionSlider = document.getElementById('consumption');
-    const consumptionInput = document.getElementById('consumptionInput');
-    const consumptionVal = document.getElementById('consumptionVal');
-    
-    const workPriceSlider = document.getElementById('workPrice');
-    const workPriceInput = document.getElementById('workPriceInput');
-    const workPriceVal = document.getElementById('workPriceVal');
-    
-    const totalSpan = document.getElementById('total');
-    const copyBtn = document.getElementById('copyBtn');
+    // ---------- Переключение вкладок ----------
+    const tabs = document.querySelectorAll('.tab-btn');
+    const calculators = {
+        credit: document.getElementById('credit'),
+        paint: document.getElementById('paint'),
+        bmi: document.getElementById('bmi'),
+        fuel: document.getElementById('fuel')
+    };
 
-    function updateAll() {
-        // получаем текущие значения
-        let area = parseFloat(areaSlider.value);
-        let paintPrice = parseFloat(paintPriceSlider.value);
-        let consumption = parseFloat(consumptionSlider.value);
-        let workPrice = parseFloat(workPriceSlider.value);
-        
-        // синхронизация ползунков и инпутов
-        areaSlider.value = area;
-        areaInput.value = area;
-        areaVal.innerText = area;
-        
-        paintPriceSlider.value = paintPrice;
-        paintPriceInput.value = paintPrice;
-        paintPriceVal.innerText = paintPrice;
-        
-        consumptionSlider.value = consumption;
-        consumptionInput.value = consumption;
-        consumptionVal.innerText = consumption;
-        
-        workPriceSlider.value = workPrice;
-        workPriceInput.value = workPrice;
-        workPriceVal.innerText = workPrice;
-        
-        // расчёты
-        let litersNeeded = area * consumption;          // нужно литров краски
-        let costPaint = litersNeeded * paintPrice;      // стоимость краски
-        let costWork = area * workPrice;                // стоимость работы
-        let total = costPaint + costWork;
-        
-        totalSpan.innerText = Math.round(total);
+    function switchTab(tabId) {
+        Object.keys(calculators).forEach(id => {
+            calculators[id].style.display = id === tabId ? 'block' : 'none';
+        });
+        tabs.forEach(btn => {
+            if (btn.getAttribute('data-tab') === tabId) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
     }
-    
-    // события для слайдеров
-    areaSlider.addEventListener('input', () => { updateAll(); });
-    paintPriceSlider.addEventListener('input', () => { updateAll(); });
-    consumptionSlider.addEventListener('input', () => { updateAll(); });
-    workPriceSlider.addEventListener('input', () => { updateAll(); });
-    
-    // события для числовых полей
-    areaInput.addEventListener('input', () => { areaSlider.value = areaInput.value; updateAll(); });
-    paintPriceInput.addEventListener('input', () => { paintPriceSlider.value = paintPriceInput.value; updateAll(); });
-    consumptionInput.addEventListener('input', () => { consumptionSlider.value = consumptionInput.value; updateAll(); });
-    workPriceInput.addEventListener('input', () => { workPriceSlider.value = workPriceInput.value; updateAll(); });
-    
-    // копирование результата
-    copyBtn.addEventListener('click', () => {
-        let totalVal = totalSpan.innerText;
-        navigator.clipboard.writeText(`Общая стоимость покраски: ${totalVal} ₽`);
-        copyBtn.innerText = '✅ Скопировано!';
-        setTimeout(() => { copyBtn.innerText = '📋 Скопировать результат'; }, 1500);
+
+    tabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.getAttribute('data-tab');
+            switchTab(tabId);
+        });
     });
-    
-    // инициализация
-    updateAll();
+
+    // ---------- Общая функция копирования ----------
+    document.querySelectorAll('.copy-result').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const source = btn.getAttribute('data-source');
+            let textToCopy = '';
+            if (source === 'credit') {
+                textToCopy = `Ежемесячный платёж по кредиту: ${document.getElementById('monthlyPayment').innerText} ₽`;
+            } else if (source === 'paint') {
+                textToCopy = `Стоимость покраски стен: ${document.getElementById('paintTotal').innerText} ₽`;
+            } else if (source === 'bmi') {
+                textToCopy = `Ваш ИМТ: ${document.getElementById('bmiValue').innerText} (${document.getElementById('bmiDesc').innerText})`;
+            } else if (source === 'fuel') {
+                textToCopy = `Стоимость поездки: ${document.getElementById('tripCost').innerText} ₽`;
+            }
+            navigator.clipboard.writeText(textToCopy);
+            btn.innerText = '✅ Скопировано!';
+            setTimeout(() => { btn.innerText = '📋 Скопировать результат'; }, 1500);
+        });
+    });
+
+    // ========== 1. Кредитный калькулятор ==========
+    const loanAmount = document.getElementById('loanAmount');
+    const loanAmountInput = document.getElementById('loanAmountInput');
+    const rate = document.getElementById('rate');
+    const rateInput = document.getElementById('rateInput');
+    const months = document.getElementById('months');
+    const monthsInput = document.getElementById('monthsInput');
+    const monthlyPaymentSpan = document.getElementById('monthlyPayment');
+
+    function updateCredit() {
+        let P = parseFloat(loanAmount.value);
+        let annualRate = parseFloat(rate.value);
+        let n = parseFloat(months.value);
+        let monthlyRate = annualRate / 100 / 12;
+        let payment = 0;
+        if (monthlyRate === 0 || P === 0) payment = P / n;
+        else payment = P * (monthlyRate * Math.pow(1 + monthlyRate, n)) / (Math.pow(1 + monthlyRate, n) - 1);
+        monthlyPaymentSpan.innerText = Math.round(payment);
+        // синхронизация полей
+        loanAmountInput.value = P;
+        rateInput.value = annualRate;
+        monthsInput.value = n;
+        document.getElementById('loanAmountVal').innerText = P;
+        document.getElementById('rateVal').innerText = annualRate;
+        document.getElementById('monthsVal').innerText = n;
+    }
+    loanAmount.addEventListener('input', updateCredit);
+    rate.addEventListener('input', updateCredit);
+    months.addEventListener('input', updateCredit);
+    loanAmountInput.addEventListener('input', () => { loanAmount.value = loanAmountInput.value; updateCredit(); });
+    rateInput.addEventListener('input', () => { rate.value = rateInput.value; updateCredit(); });
+    monthsInput.addEventListener('input', () => { months.value = monthsInput.value; updateCredit(); });
+    updateCredit();
+
+    // ========== 2. Покраска ==========
+    const paintArea = document.getElementById('paintArea');
+    const paintAreaInput = document.getElementById('paintAreaInput');
+    const paintPrice = document.getElementById('paintPrice');
+    const paintPriceInput = document.getElementById('paintPriceInput');
+    const consumption = document.getElementById('consumption');
+    const consumptionInput = document.getElementById('consumptionInput');
+    const workPrice = document.getElementById('workPrice');
+    const workPriceInput = document.getElementById('workPriceInput');
+    const paintTotalSpan = document.getElementById('paintTotal');
+
+    function updatePaint() {
+        let area = parseFloat(paintArea.value);
+        let pricePerLiter = parseFloat(paintPrice.value);
+        let cons = parseFloat(consumption.value);
+        let work = parseFloat(workPrice.value);
+        let liters = area * cons;
+        let costPaint = liters * pricePerLiter;
+        let costWork = area * work;
+        let total = costPaint + costWork;
+        paintTotalSpan.innerText = Math.round(total);
+        // синхронизация
+        paintAreaInput.value = area;
+        paintPriceInput.value = pricePerLiter;
+        consumptionInput.value = cons;
+        workPriceInput.value = work;
+        document.getElementById('paintAreaVal').innerText = area;
+        document.getElementById('paintPriceVal').innerText = pricePerLiter;
+        document.getElementById('consumptionVal').innerText = cons;
+        document.getElementById('workPriceVal').innerText = work;
+    }
+    paintArea.addEventListener('input', updatePaint);
+    paintPrice.addEventListener('input', updatePaint);
+    consumption.addEventListener('input', updatePaint);
+    workPrice.addEventListener('input', updatePaint);
+    paintAreaInput.addEventListener('input', () => { paintArea.value = paintAreaInput.value; updatePaint(); });
+    paintPriceInput.addEventListener('input', () => { paintPrice.value = paintPriceInput.value; updatePaint(); });
+    consumptionInput.addEventListener('input', () => { consumption.value = consumptionInput.value; updatePaint(); });
+    workPriceInput.addEventListener('input', () => { workPrice.value = workPriceInput.value; updatePaint(); });
+    updatePaint();
+
+    // ========== 3. ИМТ ==========
+    const height = document.getElementById('height');
+    const heightInput = document.getElementById('heightInput');
+    const weight = document.getElementById('weight');
+    const weightInput = document.getElementById('weightInput');
+    const bmiValueSpan = document.getElementById('bmiValue');
+    const bmiDescSpan = document.getElementById('bmiDesc');
+
+    function updateBMI() {
+        let h = parseFloat(height.value) / 100;
+        let w = parseFloat(weight.value);
+        let bmi = w / (h * h);
+        bmiValueSpan.innerText = bmi.toFixed(1);
+        let desc = '';
+        if (bmi < 18.5) desc = 'Недостаточный вес';
+        else if (bmi < 25) desc = 'Нормальный вес';
+        else if (bmi < 30) desc = 'Избыточный вес';
+        else desc = 'Ожирение';
+        bmiDescSpan.innerText = desc;
+        heightInput.value = height.value;
+        weightInput.value = weight.value;
+        document.getElementById('heightVal').innerText = height.value;
+        document.getElementById('weightVal').innerText = weight.value;
+    }
+    height.addEventListener('input', updateBMI);
+    weight.addEventListener('input', updateBMI);
+    heightInput.addEventListener('input', () => { height.value = heightInput.value; updateBMI(); });
+    weightInput.addEventListener('input', () => { weight.value = weightInput.value; updateBMI(); });
+    updateBMI();
+
+    // ========== 4. Расход топлива ==========
+    const distance = document.getElementById('distance');
+    const distanceInput = document.getElementById('distanceInput');
+    const fuelCons = document.getElementById('fuelCons');
+    const fuelConsInput = document.getElementById('fuelConsInput');
+    const fuelPrice = document.getElementById('fuelPrice');
+    const fuelPriceInput = document.getElementById('fuelPriceInput');
+    const tripCostSpan = document.getElementById('tripCost');
+    const litersNeededSpan = document.getElementById('litersNeeded');
+
+    function updateFuel() {
+        let dist = parseFloat(distance.value);
+        let consLper100 = parseFloat(fuelCons.value);
+        let price = parseFloat(fuelPrice.value);
+        let liters = (dist * consLper100) / 100;
+        let cost = liters * price;
+        tripCostSpan.innerText = Math.round(cost);
+        litersNeededSpan.innerText = `Потребуется ${liters.toFixed(1)} л топлива`;
+        distanceInput.value = dist;
+        fuelConsInput.value = consLper100;
+        fuelPriceInput.value = price;
+        document.getElementById('distVal').innerText = dist;
+        document.getElementById('fuelConsVal').innerText = consLper100;
+        document.getElementById('fuelPriceVal').innerText = price;
+    }
+    distance.addEventListener('input', updateFuel);
+    fuelCons.addEventListener('input', updateFuel);
+    fuelPrice.addEventListener('input', updateFuel);
+    distanceInput.addEventListener('input', () => { distance.value = distanceInput.value; updateFuel(); });
+    fuelConsInput.addEventListener('input', () => { fuelCons.value = fuelConsInput.value; updateFuel(); });
+    fuelPriceInput.addEventListener('input', () => { fuelPrice.value = fuelPriceInput.value; updateFuel(); });
+    updateFuel();
 </script>
 </body>
 </html>
