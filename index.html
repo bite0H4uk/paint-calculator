@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Калькулятор покраски стен | Стоимость ремонта</title>
+    <meta name="description" content="Рассчитайте стоимость покраски стен в квартире или комнате: краска, работа маляра, итоговая цена.">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+        body {
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .card {
+            max-width: 600px;
+            width: 100%;
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            padding: 24px 20px 32px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin: 0 0 8px 0;
+            color: #0f172a;
+        }
+        .sub {
+            color: #475569;
+            border-left: 4px solid #3b82f6;
+            padding-left: 12px;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+        }
+        .param {
+            margin-bottom: 24px;
+        }
+        label {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: #e2e8f0;
+            border-radius: 10px;
+            outline: none;
+        }
+        input[type="range"]:focus {
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .value-input {
+            margin-top: 8px;
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            font-size: 1rem;
+            background: #f8fafc;
+        }
+        .result {
+            background: #0f172a;
+            color: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin: 20px 0 20px;
+            text-align: center;
+        }
+        .result span {
+            font-size: 2rem;
+            font-weight: 800;
+            display: block;
+            letter-spacing: 1px;
+        }
+        .total {
+            font-size: 2.4rem !important;
+            color: #facc15;
+        }
+        .note {
+            font-size: 0.8rem;
+            color: #64748b;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .ad-place {
+            margin: 30px 0 10px;
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #334155;
+            border: 1px dashed #94a3b8;
+        }
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #e2e8f0;
+        }
+        footer {
+            font-size: 0.7rem;
+            text-align: center;
+            color: #94a3b8;
+            margin-top: 20px;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>🖌️ Калькулятор покраски стен</h1>
+    <div class="sub">Рассчитайте стоимость материалов + работу маляра за м²</div>
+
+    <div class="param">
+        <label>📐 Площадь стен (м²) <span id="areaVal">40</span></label>
+        <input type="range" id="area" min="10" max="150" step="1" value="40">
+        <input type="number" id="areaInput" class="value-input" step="1" value="40">
+    </div>
+
+    <div class="param">
+        <label>💰 Цена краски за 1 литр (₽) <span id="paintPriceVal">500</span></label>
+        <input type="range" id="paintPrice" min="200" max="1500" step="10" value="500">
+        <input type="number" id="paintPriceInput" class="value-input" step="10" value="500">
+    </div>
+
+    <div class="param">
+        <label>🎨 Расход краски (литров на м²) <span id="consumptionVal">0.15</span></label>
+        <input type="range" id="consumption" min="0.08" max="0.3" step="0.01" value="0.15">
+        <input type="number" id="consumptionInput" class="value-input" step="0.01" value="0.15">
+    </div>
+
+    <div class="param">
+        <label>🧑‍🎨 Стоимость работы маляра (₽ за м²) <span id="workPriceVal">250</span></label>
+        <input type="range" id="workPrice" min="100" max="600" step="10" value="250">
+        <input type="number" id="workPriceInput" class="value-input" step="10" value="250">
+    </div>
+
+    <div class="result">
+        💰 Общая стоимость покраски
+        <span class="total" id="total">0</span> ₽
+        <div style="font-size: 0.85rem; margin-top: 8px;">включая краску + работу</div>
+    </div>
+
+    <button id="copyBtn">📋 Скопировать результат</button>
+
+    <!-- Место для рекламы (тизерная сеть или партнёрка) -->
+    <div class="ad-place">
+        ⚡ Здесь будет ваша реклама — например, баннер тизерной сети<br>
+        <small>(вставьте код из TeaserNet / Rotaban / ссылку на краску Ozon)</small>
+    </div>
+
+    <footer>
+        ⚡ Калькулятор примерный. Для точного расчёта добавьте 10% на погрешность.
+    </footer>
+</div>
+
+<script>
+    // DOM элементы
+    const areaSlider = document.getElementById('area');
+    const areaInput = document.getElementById('areaInput');
+    const areaVal = document.getElementById('areaVal');
+    
+    const paintPriceSlider = document.getElementById('paintPrice');
+    const paintPriceInput = document.getElementById('paintPriceInput');
+    const paintPriceVal = document.getElementById('paintPriceVal');
+    
+    const consumptionSlider = document.getElementById('consumption');
+    const consumptionInput = document.getElementById('consumptionInput');
+    const consumptionVal = document.getElementById('consumptionVal');
+    
+    const workPriceSlider = document.getElementById('workPrice');
+    const workPriceInput = document.getElementById('workPriceInput');
+    const workPriceVal = document.getElementById('workPriceVal');
+    
+    const totalSpan = document.getElementById('total');
+    const copyBtn = document.getElementById('copyBtn');
+
+    function updateAll() {
+        // получаем текущие значения
+        let area = parseFloat(areaSlider.value);
+        let paintPrice = parseFloat(paintPriceSlider.value);
+        let consumption = parseFloat(consumptionSlider.value);
+        let workPrice = parseFloat(workPriceSlider.value);
+        
+        // синхронизация ползунков и инпутов
+        areaSlider.value = area;
+        areaInput.value = area;
+        areaVal.innerText = area;
+        
+        paintPriceSlider.value = paintPrice;
+        paintPriceInput.value = paintPrice;
+        paintPriceVal.innerText = paintPrice;
+        
+        consumptionSlider.value = consumption;
+        consumptionInput.value = consumption;
+        consumptionVal.innerText = consumption;
+        
+        workPriceSlider.value = workPrice;
+        workPriceInput.value = workPrice;
+        workPriceVal.innerText = workPrice;
+        
+        // расчёты
+        let litersNeeded = area * consumption;          // нужно литров краски
+        let costPaint = litersNeeded * paintPrice;      // стоимость краски
+        let costWork = area * workPrice;                // стоимость работы
+        let total = costPaint + costWork;
+        
+        totalSpan.innerText = Math.round(total);
+    }
+    
+    // события для слайдеров
+    areaSlider.addEventListener('input', () => { updateAll(); });
+    paintPriceSlider.addEventListener('input', () => { updateAll(); });
+    consumptionSlider.addEventListener('input', () => { updateAll(); });
+    workPriceSlider.addEventListener('input', () => { updateAll(); });
+    
+    // события для числовых полей
+    areaInput.addEventListener('input', () => { areaSlider.value = areaInput.value; updateAll(); });
+    paintPriceInput.addEventListener('input', () => { paintPriceSlider.value = paintPriceInput.value; updateAll(); });
+    consumptionInput.addEventListener('input', () => { consumptionSlider.value = consumptionInput.value; updateAll(); });
+    workPriceInput.addEventListener('input', () => { workPriceSlider.value = workPriceInput.value; updateAll(); });
+    
+    // копирование результата
+    copyBtn.addEventListener('click', () => {
+        let totalVal = totalSpan.innerText;
+        navigator.clipboard.writeText(`Общая стоимость покраски: ${totalVal} ₽`);
+        copyBtn.innerText = '✅ Скопировано!';
+        setTimeout(() => { copyBtn.innerText = '📋 Скопировать результат'; }, 1500);
+    });
+    
+    // инициализация
+    updateAll();
+</script>
+</body>
+</html>
